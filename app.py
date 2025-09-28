@@ -7,7 +7,7 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from sentence_transformers import SentenceTransformer
 
 # ---------------------------
-# LINE config (ใช้ ENV บน Railway)
+# LINE config (ใช้ ENV บน GCP)
 # ---------------------------
 
 CHANNEL_ACCESS_TOKEN = os.environ.get("CHANNEL_ACCESS_TOKEN")
@@ -31,7 +31,7 @@ def predict_intent(text):
     pred = svm.predict(emb)[0]
     confidence = probas.max()
     if confidence < CONFIDENCE_THRESHOLD:
-        return "ผมไม่แน่ใจว่าคุณหมายถึงอะไร รบกวนอธิบายอีกครั้ง", confidence
+        return "I'm not sure what you mean. Could you please explain again?", confidence
     else:
         intent = le.inverse_transform([pred])[0]
         return intent, confidence
